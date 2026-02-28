@@ -1,16 +1,15 @@
+const cors = require('cors'); // Importa a permissão
+app.use(cors()); // Libera o acesso para o seu futuro site
 const express = require('express');
 const fs = require('fs');
-
 const app = express();
 const porta = 3000;
 
 app.use(express.json());
-
 function lerDados() {
     const dados = fs.readFileSync('banco.json', 'utf-8');
     return JSON.parse(dados);
 }
-
 function salvarDados(dados) {
     fs.writeFileSync('banco.json', JSON.stringify(dados, null, 2));
 }
