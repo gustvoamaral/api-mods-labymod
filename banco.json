@@ -1,20 +1,44 @@
 [
   {
     "id": 1,
-    "nome": "OptiFine",
-    "versao": "1.20.1",
-    "utilidade": "Aumentar FPS"
+    "nome": "VoiceChat",
+    "versao": "LabyMod 4",
+    "utilidade": "Comunicação por voz com outros jogadores dentro do jogo em tempo real."
+  },
+  {
+    "id": 2,
+    "nome": "KeyStrokes",
+    "versao": "LabyMod 4",
+    "utilidade": "Mostra as teclas (W A S D e cliques) que você está pressionando na tela. Perfeito para PvP."
   },
   {
     "id": 3,
-    "nome": "TCPNoDelay",
-    "versao": "1.8.9",
-    "utilidade": "Evitar lags constantes"
+    "nome": "DamageIndicator",
+    "versao": "LabyMod 4",
+    "utilidade": "Exibe a quantidade de vida restante do jogador ou mob que você acabou de atacar."
   },
   {
     "id": 4,
-    "nome": "FPSbooster",
-    "versao": "1.8.9",
-    "utilidade": "para melhorar o desempenho do fps "
+    "nome": "Fullbright",
+    "versao": "LabyMod 4",
+    "utilidade": "Deixa o jogo 100% iluminado, removendo a escuridão das cavernas e da noite."
+  },
+  {
+    "id": 5,
+    "nome": "Flux",
+    "versao": "LabyMod 4",
+    "utilidade": "Adiciona transições suaves e animações modernas nos menus do Minecraft."
+  },
+  {
+    "id": 6,
+    "nome": "OptiFine",
+    "versao": "Multi-versão",
+    "utilidade": "Otimização pesada de FPS e suporte para Shaders."
+  },
+  {
+    "id": 7,
+    "nome": "CustomNameTags",
+    "versao": "LabyMod 4",
+    "utilidade": "Permite personalizar a tag de nome dos jogadores acima da cabeça deles."
   }
 ]

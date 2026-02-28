@@ -1,57 +1,51 @@
-const express = require('express'); 
+const express = require('express');
 const fs = require('fs');
-const cors = require('cors'); 
+const cors = require('cors');
 
-const app = express(); 
+const app = express();
 const porta = 3000;
 
-app.use(cors()); 
-app.use(express.json()); 
+app.use(cors());
+app.use(express.json());
 
-// Função para ler o arquivo banco.json
 function lerDados() {
     const dados = fs.readFileSync('banco.json', 'utf-8');
     return JSON.parse(dados);
 }
 
-// Função para salvar no arquivo banco.json
 function salvarDados(dados) {
     fs.writeFileSync('banco.json', JSON.stringify(dados, null, 2));
 }
 
-// --- ROTAS DO CRUD ---
-
 app.get('/mods', (requisicao, resposta) => {
-    const meusMods = lerDados();
-    resposta.json(meusMods);
+    resposta.json(lerDados());
 });
 
 app.post('/mods', (requisicao, resposta) => {
     const meusMods = lerDados(); 
-    const { nome, versao, utilidade } = requisicao.body;
+    // AGORA RECEBE A IMAGEM
+    const { nome, versao, utilidade, imagem } = requisicao.body;
     
     if (!nome || !versao || !utilidade) {
-        return resposta.status(400).send("Erro: Preencha todos os campos!");
+        return resposta.status(400).send("Erro: Preencha os campos obrigatórios!");
     }
 
-    // Lógica de ID melhorada: Encontra o maior ID existente e soma 1
-    // Se a lista estiver vazia, o ID começa em 1
     const novoId = meusMods.length > 0 
         ? Math.max(...meusMods.map(m => Number(m.id))) + 1 
         : 1;
 
-    const novoMod = { id: novoId, nome, versao, utilidade };
+    // SALVA A IMAGEM NO BANCO
+    const novoMod = { id: novoId, nome, versao, utilidade, imagem };
     meusMods.push(novoMod); 
     salvarDados(meusMods);  
 
-    // Retornamos o objeto JSON em vez de apenas texto (melhor para o React)
     resposta.status(201).json(novoMod);
 });
 
 app.put('/mods/:id', (requisicao, resposta) => {
     const meusMods = lerDados();
     const idParaAtualizar = parseInt(requisicao.params.id);
-    const novosDados = requisicao.body;
+    const novosDados = requisicao.body; // Já pega a imagem automaticamente aqui
 
     const index = meusMods.findIndex(mod => mod.id === idParaAtualizar);
 
@@ -71,7 +65,7 @@ app.delete('/mods/:id', (requisicao, resposta) => {
     const novaLista = meusMods.filter(mod => mod.id !== idParaApagar);
     salvarDados(novaLista);
 
-    resposta.send(`O mod com o ID ${idParaApagar} foi removido!`);
+    resposta.send(`Mod removido!`);
 });
 
 app.listen(porta, () => {
