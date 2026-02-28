@@ -1,22 +1,25 @@
-const cors = require('cors'); // Importa a permissão
-app.use(cors()); // Libera o acesso para o seu futuro site
-const express = require('express');
+const express = require('express'); 
 const fs = require('fs');
-const app = express();
+const cors = require('cors'); 
+
+const app = express(); 
 const porta = 3000;
 
-app.use(express.json());
+app.use(cors()); 
+app.use(express.json()); 
+
+// Função para ler o arquivo banco.json
 function lerDados() {
     const dados = fs.readFileSync('banco.json', 'utf-8');
     return JSON.parse(dados);
 }
+
+// Função para salvar no arquivo banco.json
 function salvarDados(dados) {
     fs.writeFileSync('banco.json', JSON.stringify(dados, null, 2));
 }
 
-// ---------------------------------------------------------
-// AS ROTAS DO SEU CRUD
-// ---------------------------------------------------------
+// --- ROTAS DO CRUD ---
 
 app.get('/mods', (requisicao, resposta) => {
     const meusMods = lerDados();
@@ -27,36 +30,22 @@ app.post('/mods', (requisicao, resposta) => {
     const meusMods = lerDados(); 
     const { nome, versao, utilidade } = requisicao.body;
     
-    // 1. VALIDAÇÃO DE SEGURANÇA
     if (!nome || !versao || !utilidade) {
-        return resposta.status(400).send("Erro: Você precisa preencher o nome, a versão e a utilidade do mod!");
+        return resposta.status(400).send("Erro: Preencha todos os campos!");
     }
 
-    // 2. GERADOR AUTOMÁTICO DE ID REFORÇADO (Anti-Null)
-    let novoId = 1;
-    if (meusMods.length > 0) {
-        const ultimoMod = meusMods[meusMods.length - 1];
-        // Verifica se o ID do último mod é um número válido antes de somar
-        if (ultimoMod.id !== null && ultimoMod.id !== undefined) {
-            novoId = Number(ultimoMod.id) + 1;
-        } else {
-            // Caso o último ID seja nulo por erro, ele tenta encontrar o maior ID da lista
-            const maiorId = Math.max(...meusMods.map(m => Number(m.id) || 0));
-            novoId = maiorId + 1;
-        }
-    }
+    // Lógica de ID melhorada: Encontra o maior ID existente e soma 1
+    // Se a lista estiver vazia, o ID começa em 1
+    const novoId = meusMods.length > 0 
+        ? Math.max(...meusMods.map(m => Number(m.id))) + 1 
+        : 1;
 
-    const novoMod = {
-        id: novoId,
-        nome: nome,
-        versao: versao,
-        utilidade: utilidade
-    };
-    
+    const novoMod = { id: novoId, nome, versao, utilidade };
     meusMods.push(novoMod); 
     salvarDados(meusMods);  
 
-    resposta.status(201).send(`Sucesso! O mod ${nome} foi adicionado com o ID automático ${novoId}.`);
+    // Retornamos o objeto JSON em vez de apenas texto (melhor para o React)
+    resposta.status(201).json(novoMod);
 });
 
 app.put('/mods/:id', (requisicao, resposta) => {
@@ -69,9 +58,9 @@ app.put('/mods/:id', (requisicao, resposta) => {
     if (index !== -1) {
         meusMods[index] = { id: idParaAtualizar, ...novosDados };
         salvarDados(meusMods);
-        resposta.send(`O mod com ID ${idParaAtualizar} foi atualizado e salvo!`);
+        resposta.send(`O mod com ID ${idParaAtualizar} foi atualizado!`);
     } else {
-        resposta.status(404).send("Mod não encontrado na lista!");
+        resposta.status(404).send("Mod não encontrado!");
     }
 });
 
@@ -79,12 +68,12 @@ app.delete('/mods/:id', (requisicao, resposta) => {
     let meusMods = lerDados();
     const idParaApagar = parseInt(requisicao.params.id);
 
-    meusMods = meusMods.filter(mod => mod.id !== idParaApagar);
-    salvarDados(meusMods);
+    const novaLista = meusMods.filter(mod => mod.id !== idParaApagar);
+    salvarDados(novaLista);
 
-    resposta.send(`O mod com o ID ${idParaApagar} foi removido para sempre!`);
+    resposta.send(`O mod com o ID ${idParaApagar} foi removido!`);
 });
 
 app.listen(porta, () => {
-    console.log(`🚀 A API está rodando e salvando arquivos! Acesse http://localhost:${porta}/mods`);
+    console.log(`🚀 API StarDix ON: http://localhost:${porta}/mods`);
 });

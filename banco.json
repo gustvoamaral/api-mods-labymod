@@ -6,9 +6,15 @@
     "utilidade": "Aumentar FPS"
   },
   {
-    "id": 2,
-    "nome": "voice chat",
-    "versao": "1.20.1",
-    "utilidade": "falar no chat do jogo"
+    "id": 3,
+    "nome": "TCPNoDelay",
+    "versao": "1.8.9",
+    "utilidade": "Evitar lags constantes"
+  },
+  {
+    "id": 4,
+    "nome": "FPSbooster",
+    "versao": "1.8.9",
+    "utilidade": "para melhorar o desempenho do fps "
   }
 ]
