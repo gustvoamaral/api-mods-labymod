@@ -1,8 +1,14 @@
 [
   {
     "id": 1,
-    "nome": "LabyMod",
-    "versao": "4.0",
-    "utilidade": "Otimização de FPS e cosméticos"
+    "nome": "OptiFine",
+    "versao": "1.20.1",
+    "utilidade": "Aumentar FPS"
+  },
+  {
+    "id": 2,
+    "nome": "voice chat",
+    "versao": "1.20.1",
+    "utilidade": "falar no chat do jogo"
   }
 ]
