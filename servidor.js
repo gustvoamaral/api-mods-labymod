@@ -28,7 +28,6 @@ app.get('/mods', (requisicao, resposta) => {
 
 app.post('/mods', (requisicao, resposta) => {
     const meusMods = lerDados(); 
-    // AGORA RECEBE A CATEGORIA
     const { nome, versao, utilidade, categoria } = requisicao.body;
     
     if (!nome || !versao || !utilidade || !categoria) {
