@@ -3,7 +3,7 @@ const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
-const porta = 3000; //porta
+const porta = 3000;  
 
 app.use(cors());
 app.use(express.json());
